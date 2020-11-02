@@ -20,6 +20,7 @@
 package org.sonar.python.checks;
 
 import org.junit.Test;
+import org.slf4j.LoggerFactory;
 import org.sonar.python.checks.utils.PythonCheckVerifier;
 
 public class WrongAssignmentOperatorCheckTest {
@@ -27,5 +28,9 @@ public class WrongAssignmentOperatorCheckTest {
   @Test
   public void test() {
     PythonCheckVerifier.verify("src/test/resources/checks/wrongAssignmentOperator.py", new WrongAssignmentOperatorCheck());
+  }
+  @Test
+  public void testmy() {
+    PythonCheckVerifier.verify("C:\\Users\\m\\Desktop\\test\\wrongAssignmentOperator.py", new WrongAssignmentOperatorCheck());
   }
 }

@@ -26,6 +26,7 @@ public abstract class PythonSubscriptionCheck implements SubscriptionCheck, Pyth
   }
 
   public void leaveFile() {
+    System.out.println("\n====>进入leaveFile,这是一个空方法");
     // callback when leaving file
   }
 }

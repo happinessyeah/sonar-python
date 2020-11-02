@@ -51,6 +51,7 @@ public class SubscriptionVisitor {
   private Tree currentElement;
 
   public static void analyze(Collection<PythonSubscriptionCheck> checks, PythonVisitorContext pythonVisitorContext) {
+    System.out.println("\n====>开始生成了rootTree,并调用了scan方法");
     SubscriptionVisitor subscriptionVisitor = new SubscriptionVisitor(checks, pythonVisitorContext);
     FileInput rootTree = pythonVisitorContext.rootTree();
     if (rootTree != null) {
@@ -70,6 +71,7 @@ public class SubscriptionVisitor {
   }
 
   private void scan(Tree element) {
+    System.out.println("\n====>进入scan");
     Deque<Tree> stack = new ArrayDeque<>();
     stack.push(element);
     while (!stack.isEmpty()) {

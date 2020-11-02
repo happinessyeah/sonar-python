@@ -29,33 +29,40 @@ import org.sonar.plugins.python.api.tree.UnaryExpression;
 @Rule(key = "S2757")
 public class WrongAssignmentOperatorCheck extends PythonSubscriptionCheck {
 
-  private static final String MESSAGE = "Was %s= meant instead?";
+    private static final String MESSAGE = "Was %s= meant instead?";
 
-  @Override
-  public void initialize(Context context) {
-    context.registerSyntaxNodeConsumer(Tree.Kind.ASSIGNMENT_STMT, ctx -> {
-      AssignmentStatement assignment = (AssignmentStatement) ctx.syntaxNode();
-      if (assignment.assignedValue().is(Tree.Kind.UNARY_PLUS) || assignment.assignedValue().is(Tree.Kind.UNARY_MINUS)) {
-        if (assignment.equalTokens().size() > 1) {
-          return;
-        }
-        UnaryExpression unaryExpression = (UnaryExpression) assignment.assignedValue();
-        Token equalToken = assignment.equalTokens().get(0);
-        Token unaryOperator = unaryExpression.operator();
-        Token variableLastToken = assignment.lhsExpressions().get(0).lastToken();
-        if (noSpacingBetween(variableLastToken, equalToken)
-          && noSpacingBetween(unaryOperator, unaryExpression.expression().firstToken())) {
-          return;
-        }
-        if (noSpacingBetween(equalToken, unaryOperator)) {
-          ctx.addIssue(equalToken, unaryOperator, String.format(MESSAGE, unaryOperator.value()));
-        }
-      }
-    });
-  }
+    @Override
+    public void initialize(Context context) {
+        System.out.println("\n====>进入了initialize...");
+        context.registerSyntaxNodeConsumer(Tree.Kind.ASSIGNMENT_STMT, ctx -> {
+            System.out.println("\n====>进入了initialize方法体");
+            AssignmentStatement assignment = (AssignmentStatement) ctx.syntaxNode();
+            System.out.println("assignment.assignedValue()=" + assignment.assignedValue());
+            if (assignment.assignedValue().is(Tree.Kind.UNARY_PLUS) || assignment.assignedValue().is(Tree.Kind.UNARY_MINUS)) {
+                System.out.println("assignment.equalTokens().size() is: " + assignment.equalTokens().size());
+                if (assignment.equalTokens().size() > 1) {
+                    return;
+                }
+                UnaryExpression unaryExpression = (UnaryExpression) assignment.assignedValue();
+                Token equalToken = assignment.equalTokens().get(0);
+                System.out.println("equalToken:value=" + equalToken.value() + ",line=" + equalToken.line() + ",type=" + equalToken.type());
+                Token unaryOperator = unaryExpression.operator();
+                Token variableLastToken = assignment.lhsExpressions().get(0).lastToken();
+                if (noSpacingBetween(variableLastToken, equalToken)
+                        && noSpacingBetween(unaryOperator, unaryExpression.expression().firstToken())) {
+                    return;
+                }
+                if (noSpacingBetween(equalToken, unaryOperator)) {
+                    ctx.addIssue(equalToken, unaryOperator, String.format(MESSAGE, unaryOperator.value()));
+                }
+            }
+            System.out.println("\n====>退出了initialize方法体");
+        });
+        System.out.println("\n====>结束了initialize...");
+    }
 
-  private static boolean noSpacingBetween(Token first, Token second) {
-    return first.line() == second.line()
-      && first.column() + first.value().length() == second.column();
-  }
+    private static boolean noSpacingBetween(Token first, Token second) {
+        return first.line() == second.line()
+                && first.column() + first.value().length() == second.column();
+    }
 }
