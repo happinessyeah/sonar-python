@@ -10,6 +10,15 @@ sonar-python embeds [Typeshed](https://github.com/python/typeshed) as a Git subm
 
 ```mvn clean install```
 
+####引入依赖
+在项目中引入以下依赖即可开始自定义规则
+```
+<dependency>
+       <groupId>org.sonarsource.python</groupId>
+       <artifactId>python-checks-testkit</artifactId>
+       <version>3.2-SNAPSHOT</version>
+ </dependency>
+```
 
 ####自定义规则
 1. 继承PythonSubscriptionCheck类
